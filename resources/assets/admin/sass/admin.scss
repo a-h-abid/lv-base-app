@@ -1,0 +1,37 @@
+@import "variables";
+
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+
+/*!
+ * Select2
+ * https://select2.org
+ */
+@import "~select2/src/scss/core";
+@import "~select2-bootstrap4-theme/src/select2-bootstrap4";
+
+/*!
+ * Flatpickr
+ * https://flatpickr.js.org
+ */
+@import "~flatpickr/dist/themes/material_red.css";
+
+/*!
+ * Startbootstrap SB Admin
+ * https://startbootstrap.com/template-overviews/sb-admin
+ */
+@import "~startbootstrap-sb-admin/scss/sb-admin.scss";
+
+/*!
+ * Custom CSS
+ */
+.footer.sticky-footer {
+    height: auto;
+    padding: 10px 0;
+}
+
+// Use a theme
+@import "./themes/light.scss";
