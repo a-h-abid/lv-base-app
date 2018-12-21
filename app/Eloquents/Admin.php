@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use App\Eloquents\Traits\AuthGuardTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -10,7 +11,12 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasRoles, Notifiable;
+    use AuthGuardTrait, HasApiTokens, HasRoles, Notifiable;
+
+    /**
+     * @var string
+     */
+    protected $guardName = 'admin';
 
     /**
      * The attributes that are mass assignable.

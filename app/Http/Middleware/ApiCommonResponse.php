@@ -21,8 +21,8 @@ class ApiCommonResponse
         if ($response instanceOf JsonResponse) {
             $data = $response->getData(true);
 
-            $data['code'] = $response->getStatusCode();
-            $data['success'] = $data['code'] >= 200 && $data['code'] < 400 ? true : false;
+            $data['code'] = $data['code'] ?? $response->getStatusCode();
+            $data['success'] = $data['success'] ?? $data['code'] >= 200 && $data['code'] < 400 ? true : false;
             $data['message'] = $data['message'] ?? $response::$statusTexts[$data['code']] ?? '--';
 
             $response->setData($data);

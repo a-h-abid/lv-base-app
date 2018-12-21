@@ -19,7 +19,7 @@ class AuthenticationException extends Exception
      *
      * @var string
      */
-    protected $redirectRoute = 'login';
+    protected $redirectRoute = 'home';
 
     /**
      * Create a new authentication exception.

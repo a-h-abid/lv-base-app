@@ -67,6 +67,21 @@ class AuthController extends Controller
     }
 
     /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $request->session()->forget($request->user()->getPasswordHashFieldName());
+
+        $this->guard()->logout();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
+
+    /**
      * The user has logged out of the application.
      *
      * @param  \Illuminate\Http\Request  $request
