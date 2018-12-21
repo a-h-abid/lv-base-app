@@ -4,6 +4,7 @@
 .guest-layout .app-name-admin {
     color: #343a40;
 }
+
 .master-layout .top-nav {
     background-color: #f8f9fa;
 }
@@ -15,6 +16,9 @@
     color: rgba(0,0,0,.5);
 }
 
+.sidebar {
+    background: #e9ecef;
+}
 .sidebar .nav-item .nav-link {
     color: hsla(0, 0%, 0%, 0.5);
 }
@@ -23,6 +27,7 @@
 .sidebar .nav-item .nav-link:hover {
     color: hsla(0, 34%, 17%, 0.53);
 }
+
 .footer.sticky-footer {
     background: #f8f9fa;
 }

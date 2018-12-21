@@ -41,4 +41,4 @@
 
 /*!
  * Custom CSS
- */.footer.sticky-footer{height:auto;padding:10px 0}.guest-layout{background-color:#f8f9fa}.guest-layout .app-name-admin{color:#343a40}.master-layout .top-nav{background-color:#f8f9fa}.navbar-brand,.top-nav .btn-link{color:rgba(0,0,0,.9)}.sidebar .nav-item .nav-link,.top-nav .navbar-nav .nav-link{color:rgba(0,0,0,.5)}.sidebar .nav-item .nav-link:active,.sidebar .nav-item .nav-link:focus,.sidebar .nav-item .nav-link:hover{color:rgba(58,29,29,.53)}.footer.sticky-footer{background:#f8f9fa}
+ */.footer.sticky-footer{height:auto;padding:10px 0}.guest-layout{background-color:#f8f9fa}.guest-layout .app-name-admin{color:#343a40}.master-layout .top-nav{background-color:#f8f9fa}.navbar-brand,.top-nav .btn-link{color:rgba(0,0,0,.9)}.top-nav .navbar-nav .nav-link{color:rgba(0,0,0,.5)}.sidebar{background:#e9ecef}.sidebar .nav-item .nav-link{color:rgba(0,0,0,.5)}.sidebar .nav-item .nav-link:active,.sidebar .nav-item .nav-link:focus,.sidebar .nav-item .nav-link:hover{color:rgba(58,29,29,.53)}.footer.sticky-footer{background:#f8f9fa}
