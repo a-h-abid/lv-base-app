@@ -51,7 +51,7 @@ class AuthenticateSession
 
         $this->guard = $request->user()->getGuardName();
 
-        $this->passwordHash = $request->user()->getPasswordHashFieldName();
+        $this->passwordHashField = $request->user()->getPasswordHashFieldName();
 
         if ($this->auth->viaRemember()) {
             $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2];
@@ -61,11 +61,11 @@ class AuthenticateSession
             }
         }
 
-        if (! $request->session()->has($this->passwordHash)) {
+        if (! $request->session()->has($this->passwordHashField)) {
             $this->storePasswordHashInSession($request);
         }
 
-        if ($request->session()->get($this->passwordHash) !== $request->user()->getAuthPassword()) {
+        if ($request->session()->get($this->passwordHashField) !== $request->user()->getAuthPassword()) {
             $this->logout($request);
         }
 
@@ -87,7 +87,7 @@ class AuthenticateSession
         }
 
         $request->session()->put([
-            $this->passwordHash => $request->user()->getAuthPassword(),
+            $this->passwordHashField => $request->user()->getAuthPassword(),
         ]);
     }
 
@@ -101,7 +101,7 @@ class AuthenticateSession
      */
     protected function logout($request)
     {
-        $this->auth->guard($guard)->logout();
+        $this->auth->guard($this->guard)->logout();
 
         $request->session()->forget($request->user()->getPasswordHashFieldName());
 
