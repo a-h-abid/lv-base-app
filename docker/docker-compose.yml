@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 networks:
   frontend:
@@ -7,64 +7,47 @@ networks:
     driver: ${NETWORKS_DRIVER}
 
 volumes:
-  adminer:
-    driver: ${VOLUMES_DRIVER}
   mysql:
     driver: ${VOLUMES_DRIVER}
 
 services:
 
-  app:
+  web-app:
+    image: ${COMPOSE_PROJECT_NAME}_web-app:${DOCKER_BUILD_MODE}
     build:
-      context: ./
-      dockerfile: docker/app/app.Dockerfile
-    working_dir: /var/www
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
+      dockerfile: docker/web-app/web-app.Dockerfile
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - BUILD_MODE=${DOCKER_BUILD_MODE}
+        - TIMEZONE=${TIMEZONE}
+    env_file: web-app/web-app.env
+    networks:
+      - frontend
+      - backend
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
-    volumes:
-      - ./:/var/www
-    networks:
-      - backend
-
-  web:
-    build:
-      context: ./
-      dockerfile: docker/web/web.Dockerfile
-    volumes:
-      - ./public:/var/www/public
-    ports:
-      - ${WEB_PORT}:80
-    networks:
-      frontend:
-      backend:
-        aliases:
-          - lv-playingpoker.localhost
-    depends_on:
-      - app
 
   db:
+    image: ${COMPOSE_PROJECT_NAME}_db:latest
     build:
-      context: ./
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/db/db.Dockerfile
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - TZ=${APP_TIMEZONE}
+    env_file: db/db.env
     volumes:
       - ${DB_DATA_VOLUME}:/var/lib/mysql
     networks:
       - backend
 
   adminer:
+    image: ${COMPOSE_PROJECT_NAME}_adminer:latest
     build:
-      context: ./
+      context: ../
       dockerfile: docker/adminer/adminer.Dockerfile
     ports:
-      - "${ADMINER_PORT}:8080"
-    volumes:
-      - adminer:/sessions
+      - "${ADMINER_PUBLISH_PORT}:8080"
     depends_on:
       - db
     networks:
@@ -72,43 +55,42 @@ services:
       - backend
 
   redis:
+    image: ${COMPOSE_PROJECT_NAME}_redis:latest
     build:
-      context: ./
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/redis/redis.Dockerfile
     networks:
       - backend
 
   echo-server:
+    image: ${COMPOSE_PROJECT_NAME}_echo-server:latest
     build:
-      context: ./
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/echo-server/echo-server.Dockerfile
     depends_on:
       - redis
     ports:
-      - "${ECHO_SERVER_PORT}:6001"
+      - "${ECHO_SERVER_PUBLISH_PORT}:6001"
     networks:
       - frontend
       - backend
 
   queue:
+    image: ${COMPOSE_PROJECT_NAME}_queue:${DOCKER_BUILD_MODE}
     build:
-      context: ./
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/queue/queue.Dockerfile
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - BUILD_MODE=${DOCKER_BUILD_MODE}
+        - TIMEZONE=${TIMEZONE}
+    env_file: queue/queue.env
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     depends_on:
       - redis
-    volumes:
-      - ./:/var/www
-      - ./docker/queue/supervisord.d:/etc/supervisord.d
+    tty: true
     networks:
       - backend
-
-  node:
-    build:
-      context: ./
-      dockerfile: docker/node/node.Dockerfile
-    tty: true
-    volumes:
-      - ./:/var/www
-

@@ -25,4 +25,7 @@
 #CREATE DATABASE IF NOT EXISTS `dev_db_3` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 #GRANT ALL ON `dev_db_3`.* TO 'default'@'%' ;
 
+#CREATE USER 'db_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+#GRANT ALL ON `dev_db_4.* TO 'db_user'@'%' ;
+
 FLUSH PRIVILEGES ;

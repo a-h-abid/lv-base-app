@@ -1,4 +1,4 @@
-FROM php:7.3.8-cli
+FROM php:7.3.8-fpm
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
@@ -8,8 +8,8 @@ ARG NO_PROXY="localhost,127.0.0.*"
 ARG BUILD_MODE="prod"
 ARG TIMEZONE="UTC"
 
-ARG APT_DEPENDENCIES="curl zip unzip gettext libz-dev libpq-dev libssl-dev libzip-dev zlib1g-dev libicu-dev libfreetype6-dev libjpeg-dev libpng-dev g++ openssl ca-certificates supervisor"
-ARG PHP_DOCKER_EXTENSIONS="pdo pdo_mysql intl zip gd sockets"
+ARG APT_DEPENDENCIES="curl zip unzip gettext libz-dev libpq-dev libssl-dev libzip-dev zlib1g-dev libicu-dev libfreetype6-dev libjpeg-dev libpng-dev g++ openssl ca-certificates nginx supervisor"
+ARG PHP_DOCKER_EXTENSIONS="pdo pdo_mysql intl opcache zip gd sockets"
 ARG PHP_PECL_EXTENSIONS="redis"
 
 # App Root Path relative to context
@@ -30,6 +30,12 @@ RUN echo "-- Configure Timezone --" \
         && echo "${TIMEZONE}" > /etc/timezone \
         && rm /etc/localtime \
         && dpkg-reconfigure -f noninteractive tzdata \
+    && echo "-- Configure NGINX --" \
+        && apt-get update -y \
+        && apt-get install -y --no-install-recommends curl gnupg2 ca-certificates lsb-release \
+        && echo "deb http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" \
+            | tee /etc/apt/sources.list.d/nginx.list \
+        && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
     && echo "-- Install Dependencies --" \
         && apt-get update -y \
         && apt-get install -y --no-install-recommends ${APT_DEPENDENCIES} \
@@ -55,6 +61,14 @@ RUN if [ ! -z "${HTTP_PROXY}" ]; then \
     && docker-php-ext-enable ${PHP_PECL_EXTENSIONS} \
     && pear clear-cache
 
+# Make Self-Signed SSL if not Cert Files found
+COPY ./docker/web-app/nginx/certs/* /etc/ssl/certs/
+RUN if [ ! -f /etc/ssl/certs/default.crt ]; then \
+        openssl genrsa -out "/etc/ssl/certs/default.key" 2048 && \
+        openssl req -new -key "/etc/ssl/certs/default.key" -out "/etc/ssl/certs/default.csr" -subj "/CN=default/O=default/C=UK" && \
+        openssl x509 -req -days 365 -in "/etc/ssl/certs/default.csr" -signkey "/etc/ssl/certs/default.key" -out "/etc/ssl/certs/default.crt" \
+    ;fi
+
 # PHP Composer Installation & Directory Permissions
 RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
@@ -63,7 +77,7 @@ RUN curl -s http://getcomposer.org/installer | php \
     && chown -R www-data:www-data /var/www/.composer /run/php \
     && chmod -R ug+sw /var/www/.composer
 
-COPY ./docker/queue/php.ini /usr/local/etc/php/conf.d/app-php.ini
+COPY ./docker/web-app/php-fpm/php.ini /usr/local/etc/php/conf.d/app-php.ini
 
 # PHP INIT Settings for production by default
 # error_reporting
@@ -185,9 +199,12 @@ USER root
 
 RUN chmod -R ug+w bootstrap/cache/ storage/
 
-COPY ./docker/queue/supervisord.conf /etc/supervisord.conf
-COPY ./docker/queue/supervisord.d/* /etc/supervisord.d/
+COPY ./docker/web-app/php-fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY ./docker/web-app/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/web-app/nginx/vhost.conf /etc/nginx/conf.d/default.conf
+COPY ./docker/web-app/supervisor/supervisord.conf /etc/supervisor/
+COPY ./docker/web-app/supervisor/conf.d/* /etc/supervisor/conf.d/
 
-WORKDIR /var/www/html
+EXPOSE 443
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

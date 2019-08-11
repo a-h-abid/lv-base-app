@@ -1,7 +1,4 @@
-FROM adminer:4.6.3
-
-# Add volume for sessions to allow session persistence
-#VOLUME /sessions
+FROM adminer:4.7.2
 
 # Set User
 USER adminer
