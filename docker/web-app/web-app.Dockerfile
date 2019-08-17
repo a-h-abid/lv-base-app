@@ -13,7 +13,7 @@ ARG PHP_DOCKER_EXTENSIONS="pdo pdo_mysql intl opcache zip gd sockets"
 ARG PHP_PECL_EXTENSIONS="redis"
 
 # App Root Path relative to context
-ARG HOST_APP_ROOT_DIR="./"
+ARG HOST_APP_ROOT_DIR="./codes/"
 ARG WORK_DIR_PATH="/var/www/html"
 
 # Proxy
@@ -22,7 +22,7 @@ ENV http_proxy="${HTTP_PROXY}" \
     no_proxy="${NO_PROXY}"
 
 # Timezone
-ENV TZ="${TIMEZONE}}"
+ENV TZ="${TIMEZONE}"
 
 USER root
 

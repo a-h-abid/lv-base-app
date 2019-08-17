@@ -7,3 +7,7 @@
 
 # Logs
 *.log
+
+# Packages
+/node_modules
+/vendors

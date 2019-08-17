@@ -4,10 +4,10 @@ LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
 RUN npm install -g laravel-echo-server
 
-COPY ./laravel-echo-server.json /var/www/laravel-echo-server.json
+COPY ./docker/echo-server/laravel-echo-server.json /var/www/html/laravel-echo-server.json
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 EXPOSE 6001
 
-CMD ["laravel-echo-server","start"]
+CMD ["laravel-echo-server", "start"]
