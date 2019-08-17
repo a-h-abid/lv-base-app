@@ -1,0 +1,32 @@
+# IDE
+.idea
+.vscode
+.vagrant
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Packages
+/node_modules
+/vendor
+
+# App ENV
+.env
+.env.backup
+
+# Storage
+/storage/*.key
+
+# Public
+/public/hot
+/public/storage
+/public/.htaccess
+!/public/.htaccess.example
+
+# Others
+.phpunit.result.cache
+phpunit.xml
+!phpunit.xml.dist
+laravel-echo-server.json

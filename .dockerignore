@@ -1,25 +1,24 @@
+/codes/node_modules
+/codes/vendor
 
-/node_modules
-/vendor
+/codes/public/hot
+/codes/public/storage
+/codes/public/.htaccess*
 
-/public/hot
-/public/storage
-/public/.htaccess*
-
-/bootstrap/cache/*
-/database/*.sqlite
-/storage/app/*
-!/storage/app/public
-/storage/app/public/*
-/storage/data/*
-/storage/framework/cache
-!/storage/framework/cache/data
-/storage/framework/cache/data/*
-/storage/framework/sessions/*
-/storage/framework/testing/*
-/storage/framework/views/*
-/storage/logs/*
-/storage/*.key
+/codes/bootstrap/cache/*
+/codes/database/*.sqlite
+/codes/storage/app/*
+!/codes/storage/app/public
+/codes/storage/app/public/*
+/codes/storage/data/*
+/codes/storage/framework/cache
+!/codes/storage/framework/cache/data
+/codes/storage/framework/cache/data/*
+/codes/storage/framework/sessions/*
+/codes/storage/framework/testing/*
+/codes/storage/framework/views/*
+/codes/storage/logs/*
+/codes/storage/*.key
 
 /.idea
 /.vscode
@@ -30,6 +29,6 @@
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
-npm-debug.log
+*.log
 yarn-error.log
 phpunit.xml

@@ -1,25 +1,9 @@
-/node_modules
-/vendor
-
-/public/hot
-/public/storage
-/public/.htaccess
-!/public/.htaccess.example
-
-/storage/*.key
-
-/.idea
-/.vscode
-/.vagrant
+# IDE
+.idea
+.vscode
+.vagrant
 *.sublime-project
 *.sublime-workspace
-Homestead.json
-Homestead.yaml
 
-npm-debug.log
-yarn-error.log
-
-.env
-.env.backup
-.phpunit.result.cache
-laravel-echo-server.json
+# Logs
+*.log
