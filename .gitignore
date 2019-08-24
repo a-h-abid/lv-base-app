@@ -1,9 +1,10 @@
 # IDE
-.idea
-.vscode
-.vagrant
+/.idea
+/.vscode
+/.vagrant
 *.sublime-project
 *.sublime-workspace
+/nbproject
 
 # Logs
 *.log

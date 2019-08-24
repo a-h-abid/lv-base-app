@@ -19,6 +19,7 @@
 *.xml text
 *.svg text
 *.yml text
+*.scss text
 .htaccess text
 
 # Declare files that will always have CRLF line endings on checkout.
