@@ -36,8 +36,6 @@ services:
       context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/db/db.Dockerfile
     env_file: db/db.env
-    volumes:
-      - ${DB_DATA_VOLUME}:/var/lib/mysql
     networks:
       - backend
 
@@ -46,8 +44,6 @@ services:
     build:
       context: ../
       dockerfile: docker/adminer/adminer.Dockerfile
-    ports:
-      - "${ADMINER_PUBLISH_PORT}:8080"
     depends_on:
       - db
     networks:
@@ -69,8 +65,6 @@ services:
       dockerfile: docker/echo-server/echo-server.Dockerfile
     depends_on:
       - redis
-    ports:
-      - "${ECHO_SERVER_PUBLISH_PORT}:6001"
     networks:
       - frontend
       - backend
@@ -104,3 +98,4 @@ services:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
         - NO_PROXY=${NO_PROXY}
+    tty: true
