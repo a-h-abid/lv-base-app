@@ -1,6 +1,8 @@
 version: '3.7'
 
 volumes:
+  mysql:
+    driver: ${VOLUMES_DRIVER}
   adminer:
     driver: ${VOLUMES_DRIVER}
   node_modules:
@@ -8,37 +10,84 @@ volumes:
 
 services:
 
-  web-app:
-    ports:
-      - ${WEB_HTTP_PUBLISH_PORT}:80
-      - ${WEB_HTTPS_PUBLISH_PORT}:443
+  app:
+    restart: "no"
     volumes:
-      - ${DOCKER_VOLUME_ROOT_DIR}:/var/www/html
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
+
+  queue:
+    restart: "no"
+    volumes:
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
+
+  cron:
+    restart: "no"
+    volumes:
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
+
+  web:
+    restart: "no"
+    volumes:
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
+
+  redis:
+    restart: "no"
+    # ports:
+    #   - "${REDIS_PUBLISH_PORT}:6379"
+
+  echo-server:
+    restart: "no"
+    ports:
+      - "${ECHO_SERVER_PUBLISH_PORT}:6001"
+    volumes:
+      - ./echo-server/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
+
+  queue:
+    restart: "no"
+    volumes:
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
+
+## --------------------------------------------------------------------------------------
 
   db:
+    image: ${COMPOSE_PROJECT_NAME}_db:latest
+    build:
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
+      dockerfile: docker/db/db.Dockerfile
+    restart: "no"
+    env_file:
+      - db/db.env
+    networks:
+      - default
     volumes:
       - ${DB_DATA_VOLUME}:/var/lib/mysql
 
   adminer:
+    image: ${COMPOSE_PROJECT_NAME}_adminer:latest
+    build:
+      context: ../
+      dockerfile: docker/adminer/adminer.Dockerfile
+    depends_on:
+      - db
+    restart: "no"
     ports:
       - "${ADMINER_PUBLISH_PORT}:8080"
+    networks:
+      - default
     volumes:
       - adminer:/sessions
 
-  redis:
-    ports:
-      - "${REDIS_PUBLISH_PORT}:6379"
-
-  echo-server:
-    ports:
-      - "${ECHO_SERVER_PUBLISH_PORT}:6001"
-
-  queue:
-    volumes:
-      - ${DOCKER_VOLUME_ROOT_DIR}:/var/www/html
-      - ./docker/queue/supervisord.d:/etc/supervisord.d
-
   node:
+    image: ${COMPOSE_PROJECT_NAME}_node:latest
+    build:
+      context: ${DOCKER_BUILD_CONTEXT_DIR}
+      dockerfile: docker/node/node.Dockerfile
+      args:
+        - HTTP_PROXY=${APP_HTTP_PROXY}
+        - HTTPS_PROXY=${APP_HTTPS_PROXY}
+        - NO_PROXY=${APP_NO_PROXY}
+    tty: true
+    restart: "no"
     volumes:
-      - ${DOCKER_VOLUME_ROOT_DIR}:/var/www/html
+      - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
       - node_modules:/var/www/html/node_modules

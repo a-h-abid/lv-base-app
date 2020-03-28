@@ -2,11 +2,30 @@ version: '3.7'
 
 services:
 
-  web-app:
+  app:
+    env_file:
+      - .envs/app.env
+      - .envs/php-ini.env
+
+  queue:
+    env_file:
+      - .envs/app.env
+      - .envs/php-ini.env
+
+  cron:
+    env_file:
+      - .envs/app.env
+      - .envs/php-ini.env
+
+  web:
+    env_file:
+      - .envs/web.env
     ports:
       - ${WEB_HTTP_PUBLISH_PORT}:80
       - ${WEB_HTTPS_PUBLISH_PORT}:443
 
-  echo-server:
-    ports:
-      - "${ECHO_SERVER_PUBLISH_PORT}:6001"
+  redis:
+    env_file:
+      - .envs/redis.env
+    sysctls:
+      net.core.somaxconn: "512"

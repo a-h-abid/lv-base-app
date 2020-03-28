@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Eloquents\User;
 use App\Exceptions\InactiveModelException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\UserRegisterFormRequest;
+use App\Http\Requests\Common\UserRegisterFormRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

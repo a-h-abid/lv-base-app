@@ -1,62 +1,81 @@
 version: '3.7'
 
 networks:
-  frontend:
-    driver: ${NETWORKS_DRIVER}
-  backend:
+  default:
     driver: ${NETWORKS_DRIVER}
 
 volumes:
-  mysql:
+  redis:
     driver: ${VOLUMES_DRIVER}
 
 services:
 
-  web-app:
-    image: ${COMPOSE_PROJECT_NAME}_web-app:${DOCKER_BUILD_MODE}
+  app:
+    image: ${COMPOSE_PROJECT_NAME}_app:${DOCKER_BUILD_MODE}
     build:
       context: ${DOCKER_BUILD_CONTEXT_DIR}
-      dockerfile: docker/web-app/web-app.Dockerfile
+      dockerfile: docker/app/app.Dockerfile
       args:
-        - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}
-        - NO_PROXY=${NO_PROXY}
+        - HTTP_PROXY=${APP_HTTP_PROXY}
+        - HTTPS_PROXY=${APP_HTTPS_PROXY}
+        - NO_PROXY=${APP_NO_PROXY}
         - BUILD_MODE=${DOCKER_BUILD_MODE}
         - TIMEZONE=${TIMEZONE}
-    env_file: web-app/web-app.env
+    restart: always
+    environment:
+      - CONTAINER_ROLE=app
+    depends_on:
+      - redis
     networks:
-      - frontend
-      - backend
-    extra_hosts:
-      - "dockerhost:${DOCKER_HOST_IP}"
+      - default
 
-  db:
-    image: ${COMPOSE_PROJECT_NAME}_db:latest
+  queue:
+    image: ${COMPOSE_PROJECT_NAME}_app:${DOCKER_BUILD_MODE}
+    tty: true
+    restart: always
+    environment:
+      - CONTAINER_ROLE=queue
+    depends_on:
+      - redis
+    networks:
+      - default
+
+  cron:
+    image: ${COMPOSE_PROJECT_NAME}_app:${DOCKER_BUILD_MODE}
+    tty: true
+    restart: always
+    environment:
+      - CONTAINER_ROLE=cron
+    depends_on:
+      - redis
+    networks:
+      - default
+
+  web:
+    image: ${COMPOSE_PROJECT_NAME}_web:${DOCKER_BUILD_MODE}
     build:
       context: ${DOCKER_BUILD_CONTEXT_DIR}
-      dockerfile: docker/db/db.Dockerfile
-    env_file: db/db.env
-    networks:
-      - backend
-
-  adminer:
-    image: ${COMPOSE_PROJECT_NAME}_adminer:latest
-    build:
-      context: ../
-      dockerfile: docker/adminer/adminer.Dockerfile
+      dockerfile: docker/web/web.Dockerfile
+      args:
+        - HTTP_PROXY=${APP_HTTP_PROXY}
+        - HTTPS_PROXY=${APP_HTTPS_PROXY}
+        - NO_PROXY=${APP_NO_PROXY}
+    restart: always
     depends_on:
-      - db
+      - app
     networks:
-      - frontend
-      - backend
+      - default
 
   redis:
     image: ${COMPOSE_PROJECT_NAME}_redis:latest
     build:
       context: ${DOCKER_BUILD_CONTEXT_DIR}
       dockerfile: docker/redis/redis.Dockerfile
+    restart: always
     networks:
-      - backend
+      - default
+    volumes:
+      - redis:/data
 
   echo-server:
     image: ${COMPOSE_PROJECT_NAME}_echo-server:latest
@@ -65,37 +84,6 @@ services:
       dockerfile: docker/echo-server/echo-server.Dockerfile
     depends_on:
       - redis
+    restart: always
     networks:
-      - frontend
-      - backend
-
-  queue:
-    image: ${COMPOSE_PROJECT_NAME}_queue:${DOCKER_BUILD_MODE}
-    build:
-      context: ${DOCKER_BUILD_CONTEXT_DIR}
-      dockerfile: docker/queue/queue.Dockerfile
-      args:
-        - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}
-        - NO_PROXY=${NO_PROXY}
-        - BUILD_MODE=${DOCKER_BUILD_MODE}
-        - TIMEZONE=${TIMEZONE}
-    env_file: queue/queue.env
-    extra_hosts:
-      - "dockerhost:${DOCKER_HOST_IP}"
-    depends_on:
-      - redis
-    tty: true
-    networks:
-      - backend
-
-  node:
-    image: ${COMPOSE_PROJECT_NAME}_node:latest
-    build:
-      context: ${DOCKER_BUILD_CONTEXT_DIR}
-      dockerfile: docker/node/node.Dockerfile
-      args:
-        - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}
-        - NO_PROXY=${NO_PROXY}
-    tty: true
+      - default

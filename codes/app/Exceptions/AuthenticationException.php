@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticationException extends Exception
 {
@@ -62,7 +63,7 @@ class AuthenticationException extends Exception
      */
     public function render(Request $request)
     {
-        \Log::info('AuthenticationException on Full URL: '. $request->method().' '.$request->fullUrl());
+        Log::info('AuthenticationException on Full URL: '. $request->method().' '.$request->fullUrl());
 
         return redirect()->route($this->redirectRoute);
     }

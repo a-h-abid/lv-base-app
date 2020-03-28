@@ -2,7 +2,7 @@ ARG HTTP_PROXY=""
 ARG HTTPS_PROXY=""
 ARG NO_PROXY="localhost,127.0.0.*"
 
-FROM node:12.8.0-slim
+FROM node:13.12.0-slim
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
@@ -13,7 +13,7 @@ ENV no_proxy "${NO_PROXY}"
 WORKDIR /var/www/html
 
 # copy package.json and lock files
-COPY ./codes/package*.json ./codes/.yarnrc ./codes/yarn.lock ./
+COPY ./codes/package*.json ./codes/.yarnrc ./codes/yarn.lock* ./
 
 # install project dependencies
 RUN if [ ! -z "${HTTP_PROXY}" ]; then \

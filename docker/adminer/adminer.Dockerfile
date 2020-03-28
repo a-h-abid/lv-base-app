@@ -1,4 +1,4 @@
-FROM adminer:4.7.2
+FROM adminer:4.7.6
 
 # Set User
 USER adminer

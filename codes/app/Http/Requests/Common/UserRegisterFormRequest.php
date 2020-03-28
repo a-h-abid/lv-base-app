@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Common;
 
 use App\Rules\LatitudeRule;
 use App\Rules\LongitudeRule;
