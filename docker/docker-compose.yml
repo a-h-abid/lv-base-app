@@ -77,11 +77,11 @@ services:
     volumes:
       - redis:/data
 
-  echo-server:
-    image: ${COMPOSE_PROJECT_NAME}_echo-server:latest
+  echo:
+    image: ${COMPOSE_PROJECT_NAME}_echo:latest
     build:
       context: ${DOCKER_BUILD_CONTEXT_DIR}
-      dockerfile: docker/echo-server/echo-server.Dockerfile
+      dockerfile: docker/echo/echo.Dockerfile
     depends_on:
       - redis
     restart: always

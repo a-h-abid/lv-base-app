@@ -33,13 +33,28 @@ RUN npm run prod
 # ------------------------------------------------------------------
 FROM nginx:1.17.9
 
+ARG VHOST_DNS_RESOLVER_IP="127.0.0.11"
+ARG VHOST_UPSTREAM_APP_SERVICE_HOST_PORT="app:9000"
+ARG VHOST_UPSTREAM_ECHO_SERVICE_HOST_PORT="echo:6001"
+
+ENV VHOST_DNS_RESOLVER_IP=${VHOST_DNS_RESOLVER_IP}
+ENV VHOST_UPSTREAM_APP_SERVICE_HOST_PORT=${VHOST_UPSTREAM_APP_SERVICE_HOST_PORT}
+ENV VHOST_UPSTREAM_ECHO_SERVICE_HOST_PORT=${VHOST_UPSTREAM_ECHO_SERVICE_HOST_PORT}
+
+COPY --chown=root:root ./docker/web/nginx.conf /etc/nginx/nginx.conf
 COPY --chown=root:root ./docker/web/vhost.conf /etc/nginx/conf.d/default.conf
 COPY --chown=root:root ./docker/web/certs/* /etc/ssl/certs/
+COPY --chown=www-data:www-data ./docker/web/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 WORKDIR /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html
-
 COPY --chown=www-data:www-data --from=build-assets /var/www/html/public /var/www/html/public
 
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 80 443
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+
+CMD ["nginx"]

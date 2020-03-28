@@ -35,12 +35,12 @@ services:
     # ports:
     #   - "${REDIS_PUBLISH_PORT}:6379"
 
-  echo-server:
+  echo:
     restart: "no"
     ports:
       - "${ECHO_SERVER_PUBLISH_PORT}:6001"
     volumes:
-      - ./echo-server/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
+      - ./echo/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
 
   queue:
     restart: "no"
