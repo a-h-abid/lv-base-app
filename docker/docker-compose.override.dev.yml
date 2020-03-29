@@ -40,7 +40,7 @@ services:
     ports:
       - "${ECHO_SERVER_PUBLISH_PORT}:6001"
     volumes:
-      - ./echo/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
+      - ${DOCKER_VOLUME_ROOT_DIR}docker/echo/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
 
   queue:
     restart: "no"
