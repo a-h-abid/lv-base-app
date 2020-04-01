@@ -56,7 +56,7 @@ services:
       dockerfile: docker/db/db.Dockerfile
     restart: "no"
     env_file:
-      - db/db.env
+      - .envs/db.env
     networks:
       - default
     volumes:
