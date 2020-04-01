@@ -15,11 +15,13 @@ class AuditableServiceProvider extends ServiceProvider
     public function boot()
     {
         Blueprint::macro('auditable', function($createdByFieldName = 'created_by', $updatedByFieldName = 'updated_by') {
-            $this->unsignedInteger($createdByFieldName)->nullable()->index();
-            $this->unsignedInteger($updatedByFieldName)->nullable()->index();
+            /** @var Blueprint $this */
+            $this->unsignedBigInteger($createdByFieldName)->nullable()->index();
+            $this->unsignedBigInteger($updatedByFieldName)->nullable()->index();
         });
 
         Blueprint::macro('dropAuditable', function($createdByFieldName = 'created_by', $updatedByFieldName = 'updated_by') {
+            /** @var Blueprint $this */
             $this->dropColumn([$createdByFieldName, $updatedByFieldName]);
         });
     }
