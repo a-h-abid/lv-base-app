@@ -35,11 +35,9 @@
             </div>
 
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="remember" value="1">
-                        Remember Password
-                    </label>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" name="remember" value="1" />
+                    <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
                 </div>
             </div>
 
