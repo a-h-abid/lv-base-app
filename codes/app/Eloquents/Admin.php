@@ -7,11 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements Auditable
 {
-    use AuthGuardTrait, HasApiTokens, HasRoles, Notifiable;
+    use AuthGuardTrait, AuditableTrait, HasApiTokens, HasRoles, Notifiable;
 
     /**
      * @var string
@@ -24,7 +26,12 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'active', 'phone', 'address'
+        'name',
+        'email',
+        'password',
+        'active',
+        'phone',
+        'address',
     ];
 
     /**
@@ -34,6 +41,15 @@ class Admin extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     /**

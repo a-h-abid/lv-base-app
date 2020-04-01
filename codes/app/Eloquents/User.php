@@ -3,17 +3,17 @@
 namespace App\Eloquents;
 
 use App\Eloquents\Traits\AuthGuardTrait;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Auditable
 {
-    use AuthGuardTrait, HasApiTokens, HasRoles, Notifiable;
+    use AuthGuardTrait, AuditableTrait, HasApiTokens, HasRoles, Notifiable;
 
     /**
      * @var string
