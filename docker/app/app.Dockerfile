@@ -62,7 +62,7 @@ RUN curl -s http://getcomposer.org/installer | php \
     && chown -R www-data:www-data /var/www/.composer /run/php \
     && chmod -R ug+sw /var/www/.composer
 
-COPY ./docker/.commons/php.ini /usr/local/etc/php/conf.d/app-php.ini
+COPY ./docker/app/php.ini /usr/local/etc/php/conf.d/app-php.ini
 
 # PHP INI Settings for production by default
 ENV PHP_INI_OUTPUT_BUFFERING=4096 \
