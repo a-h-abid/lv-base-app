@@ -19,6 +19,7 @@ class CreateAdminsTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('active')->default(0);
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone', 50)->nullable();
             $table->string('address')->nullable();
             $table->rememberToken();

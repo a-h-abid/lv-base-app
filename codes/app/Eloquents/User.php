@@ -8,12 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Auditable as AuditableTrait;
+use OwenIt\Auditing\Auditable as AuditingAuditable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable
 {
-    use AuthGuardTrait, AuditableTrait, HasApiTokens, HasRoles, Notifiable;
+    use AuthGuardTrait, AuditingAuditable, HasApiTokens, HasRoles, Notifiable;
 
     /**
      * @var string
@@ -31,6 +31,7 @@ class User extends Authenticatable implements Auditable
         'password',
         'active',
         'phone',
+        'address',
     ];
 
     /**
