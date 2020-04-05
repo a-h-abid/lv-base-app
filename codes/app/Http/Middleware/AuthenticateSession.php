@@ -11,7 +11,7 @@ class AuthenticateSession
     /**
      * The authentication factory implementation.
      *
-     * @var \Illuminate\Contracts\Auth\Factory
+     * @var \Illuminate\Auth\SessionGuard
      */
     protected $auth;
 
@@ -45,12 +45,11 @@ class AuthenticateSession
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->user() || ! $request->session()) {
+        if (! $request->hasSession() || ! $request->user()) {
             return $next($request);
         }
 
         $this->guard = $request->user()->getGuardName();
-
         $this->passwordHashField = $request->user()->getPasswordHashFieldName();
 
         if ($this->auth->viaRemember()) {
@@ -101,9 +100,13 @@ class AuthenticateSession
      */
     protected function logout($request)
     {
-        $this->auth->guard($this->guard)->logout();
+        if ($request->user()) {
+            $request->session()->forget($request->user()->getPasswordHashFieldName());
+        }
 
-        $request->session()->forget($request->user()->getPasswordHashFieldName());
+        $this->auth->guard($this->guard)->logoutCurrentDevice();
+
+        $request->session()->flush();
 
         throw new AuthenticationException('Unauthenticated.', [$this->guard]);
     }
