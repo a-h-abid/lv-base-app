@@ -103,4 +103,15 @@ class AuthController extends Controller
     {
         return Auth::guard('admin');
     }
+
+    /**
+     * Get the throttle key for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function throttleKey(Request $request)
+    {
+        return sha1($request->server('HTTP_USER_AGENT').'|'.$request->ip());
+    }
 }

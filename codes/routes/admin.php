@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 $router->middleware('guest:admin')->group(function($router){
     $router->get('/', 'AuthController@index')->name('login');
-    $router->post('/', 'AuthController@login');
+    $router->middleware('throttle:60,2')->post('/', 'AuthController@login');
 });
 
 $router->middleware('auth:admin')->group(function($router){
