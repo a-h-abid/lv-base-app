@@ -8,6 +8,15 @@ use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class Permission
 {
+    /**
+     * Authorize Permissions
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  Closure $next
+     * @param  array|string $permission
+     * @return \Illuminate\Http\Response
+     * @throws UnauthorizedException
+     */
     public function handle($request, Closure $next, $permission)
     {
         if (app('auth')->guest()) {
