@@ -62,6 +62,11 @@ return [
             'description' => '',
             'roles' => [],
         ],
+        'admin.app.audits' => [
+            'name' => 'App Audits Management',
+            'description' => '',
+            'roles' => [],
+        ],
 
         'admin.common' => [
             'name' => 'Common Section Management',

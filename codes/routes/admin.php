@@ -78,6 +78,10 @@ $router->middleware('auth:admin')->group(function($router){
             $router->get('settings', 'App\SettingsController@form')->name('settings.form');
             $router->post('settings', 'App\SettingsController@save')->name('settings.save');
         });
+        Route::middleware('permission:admin.app.audits')->group(function($router) {
+            $router->get('audits', 'App\AuditsController@index')->name('audits.index');
+            $router->get('audits/{id}', 'App\AuditsController@show')->name('audits.show');
+        });
 
 
     });
