@@ -57,6 +57,12 @@ return [
             'roles' => [],
         ],
 
+        'admin.app.settings' => [
+            'name' => 'App Settings Management',
+            'description' => '',
+            'roles' => [],
+        ],
+
         'admin.common' => [
             'name' => 'Common Section Management',
             'description' => '',

@@ -74,7 +74,12 @@ $router->middleware('auth:admin')->group(function($router){
     });
 
     Route::prefix('app')->name('app.')->group(function($router) {
-        // App Specific Admin Routes
+        Route::middleware('permission:admin.app.settings')->group(function($router) {
+            $router->get('settings', 'App\SettingsController@form')->name('settings.form');
+            $router->post('settings', 'App\SettingsController@save')->name('settings.save');
+        });
+
+
     });
 
 });

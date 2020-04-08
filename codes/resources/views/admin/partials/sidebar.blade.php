@@ -46,4 +46,13 @@
     </li>
     @endcanany
 
+    @canany(['admin','admin.app','admin.app.settings'])
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.app.settings.form') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </li>
+    @endcanany
+
 </ul>
