@@ -34,7 +34,12 @@ class SettingsController extends Controller
     {
         $data = $request->validated();
 
-        $setting = AppSetting::create($data);
+        $settings = AppSetting::first();
+        if (empty($settings)) {
+            $settings = new AppSetting;
+        }
+        $settings->fill($data);
+        $settings->save();
 
         session()->flash('flash.success', 'App Setting saved!');
 
