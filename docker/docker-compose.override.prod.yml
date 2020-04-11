@@ -29,3 +29,7 @@ services:
       - .envs/redis.env
     sysctls:
       net.core.somaxconn: "512"
+
+  minio:
+    env_file:
+      - .envs/minio.env

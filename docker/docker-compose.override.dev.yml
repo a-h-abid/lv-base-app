@@ -47,6 +47,15 @@ services:
     volumes:
       - ${DOCKER_VOLUME_CODES_ROOT_DIR}:/var/www/html
 
+  minio:
+    restart: "no"
+    ports:
+      - "${MINIO_PUBLISH_PORT}:9000"
+    volumes:
+      - ${DOCKER_VOLUME_ROOT_DIR}docker/minio/data:/export
+      - ${DOCKER_VOLUME_ROOT_DIR}docker/minio/config:/root/.minio
+
+
 ## --------------------------------------------------------------------------------------
 
   db:
