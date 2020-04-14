@@ -92,7 +92,7 @@ return [
             'formatter' => env('LOG_STDERR_FORMATTER', JsonFormatter::class),
             // 'formatter_with' => [],
             'with' => [
-                'stream' => fopen('/proc/1/fd/1', 'w'),
+                'stream' => '/proc/1/fd/1',
                 'level' => 'debug',
             ],
         ],
