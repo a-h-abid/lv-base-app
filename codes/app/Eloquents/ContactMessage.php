@@ -2,9 +2,7 @@
 
 namespace App\Eloquents;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ContactMessage extends Model
+class ContactMessage extends AbstractModel
 {
     /**
      * The attributes that are mass assignable.

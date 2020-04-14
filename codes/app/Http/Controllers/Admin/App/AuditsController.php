@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Admin\App;
 
+use Altek\Accountant\Models\Ledger;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use OwenIt\Auditing\Models\Audit;
 
 class AuditsController extends Controller
 {
@@ -15,7 +14,7 @@ class AuditsController extends Controller
      */
     public function index()
     {
-        $audits = app()->make(Audit::class);
+        $audits = app()->make(Ledger::class);
 
         $total = $audits->count();
 
@@ -32,7 +31,7 @@ class AuditsController extends Controller
      */
     public function show($id)
     {
-        $audit = Audit::findOrFail($id);
+        $audit = Ledger::findOrFail($id);
 
         return view('admin/auth/app/audits/show', [
             'audit' => $audit,

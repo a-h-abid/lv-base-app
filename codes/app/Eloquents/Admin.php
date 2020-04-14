@@ -7,13 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
-use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Auditable as AuditingAuditable;
 use Spatie\Permission\Traits\HasRoles;
+use Altek\Accountant\Contracts\Recordable;
 
-class Admin extends Authenticatable implements Auditable
+class Admin extends Authenticatable implements Recordable
 {
-    use AuthGuardTrait, AuditingAuditable, HasApiTokens, HasRoles, Notifiable;
+    use AuthGuardTrait, HasApiTokens, HasRoles, Notifiable;
+    use \Altek\Accountant\Recordable;
+    use \Altek\Eventually\Eventually;
 
     /**
      * @var string

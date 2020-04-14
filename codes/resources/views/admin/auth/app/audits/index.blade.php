@@ -26,9 +26,9 @@
                     <th scope="col">User</th>
                     <th scope="col">URL</th>
                     <th scope="col">Event</th>
+                    <th scope="col">Entity</th>
                     <th scope="col">IP Address</th>
                     <th scope="col">User Agent</th>
-                    <th scope="col">Tags</th>
                     <th scope="col"></th>
                 </tr>
             @endslot
@@ -48,9 +48,14 @@
                 </td>
                 <td>{{ $audit->url }}</td>
                 <td>{{ $audit->event }}</td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li><strong>ID: </strong> {{ $audit->recordable_id }}</li>
+                        <li><strong>Type: </strong> {{ str_replace('App\Eloquents\\', '', $audit->recordable_type) }}</li>
+                    </ul>
+                </td>
                 <td>{{ $audit->ip_address }}</td>
                 <td>{{ $audit->user_agent }}</td>
-                <td>{{ $audit->tags }}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{ route('admin.app.audits.show', [$audit->id]) }}" class="btn btn-sm btn-primary">View</a>

@@ -79,6 +79,20 @@
             </div>
 
             <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Entity Type</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control-plaintext" value="{{ str_replace('App\Eloquents\\', '', $audit->recordable_type) }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Entity Id</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control-plaintext" value="{{ $audit->recordable_id }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label class="col-sm-3 col-form-label">IP Address</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control-plaintext" value="{{ $audit->ip_address }}">
@@ -93,23 +107,30 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Tags</label>
+                <label class="col-sm-3 col-form-label">Properties</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control-plaintext" value="{{ $audit->tags }}">
+                    <pre>@json($audit->properties, JSON_PRETTY_PRINT)</pre>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Old Values</label>
+                <label class="col-sm-3 col-form-label">Modified</label>
                 <div class="col-sm-6">
-                    <pre>@json($audit->old_values, JSON_PRETTY_PRINT)</pre>
+                    <pre>@json($audit->modified, JSON_PRETTY_PRINT)</pre>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">New Values</label>
+                <label class="col-sm-3 col-form-label">Pivot</label>
                 <div class="col-sm-6">
-                    <pre>@json($audit->new_values, JSON_PRETTY_PRINT)</pre>
+                    <pre>@json($audit->pivot, JSON_PRETTY_PRINT)</pre>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Extra</label>
+                <div class="col-sm-6">
+                    <pre>@json($audit->extra, JSON_PRETTY_PRINT)</pre>
                 </div>
             </div>
 

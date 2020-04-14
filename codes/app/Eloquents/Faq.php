@@ -2,9 +2,7 @@
 
 namespace App\Eloquents;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Faq extends Model
+class Faq extends AbstractModel
 {
     /**
      * The attributes that are mass assignable.
