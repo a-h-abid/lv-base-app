@@ -1,4 +1,4 @@
-FROM redis:5.0.8
+FROM redis:5.0.9
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
