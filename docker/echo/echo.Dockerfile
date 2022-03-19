@@ -1,4 +1,4 @@
-FROM node:13.11.0-slim
+FROM node:13-slim
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
