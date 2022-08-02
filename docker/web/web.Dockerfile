@@ -31,7 +31,7 @@ RUN npm run prod
 
 
 # ------------------------------------------------------------------
-FROM nginx:1.17.9
+FROM nginx:1.22
 
 ARG VHOST_DNS_RESOLVER_IP="127.0.0.11"
 ARG VHOST_UPSTREAM_APP_SERVICE_HOST_PORT="app:9000"
