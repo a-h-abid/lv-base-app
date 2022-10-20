@@ -1,4 +1,4 @@
-FROM mysql:8.0.29
+FROM mysql:8.0
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
