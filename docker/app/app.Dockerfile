@@ -1,4 +1,4 @@
-FROM php:7.4.4-fpm
+FROM php:7-fpm
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
