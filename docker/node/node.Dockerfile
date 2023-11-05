@@ -2,7 +2,7 @@ ARG HTTP_PROXY=""
 ARG HTTPS_PROXY=""
 ARG NO_PROXY="localhost,127.0.0.*"
 
-FROM node:13.12.0-slim
+FROM node:13.14.0-slim
 
 LABEL maintainer="Ahmedul Haque Abid <a_h_abid@hotmail.com>"
 
